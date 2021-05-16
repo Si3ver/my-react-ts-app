@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import MyHeader from './components/Header';
 import AddInput from './components/AddInput';
 import TodoItem from './components/TodoItem';
@@ -14,6 +14,17 @@ function App() {
 
   const [isInputShow, setInputShow] = useState(false)
   const [todoList, setTodoList] = useState<todoItemProps[]>([])
+
+  /** 本地存储: 取 */
+  useEffect(() => {
+    const todoData = JSON.parse(localStorage.getItem('todoData') || '[]')
+    setTodoList(todoData)
+  }, [])
+
+  /** 本地存储: 存 */
+  useEffect(() => {
+    localStorage.setItem('todoData', JSON.stringify(todoList))
+  }, [todoList])
 
   /** 增加一项todo */
   const addItem = useCallback((value: string) => {

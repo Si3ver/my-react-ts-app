@@ -1,11 +1,29 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import MyHeader from './components/Header';
 import AddInput from './components/AddInput';
 import './App.css';
 
+interface todoItemProps {
+  id: number;
+  content: string;
+  completed: boolean;
+}
+
 function App() {
 
   const [isInputShow, setInputShow] = useState(false)
+  const [todoList, setTodoList] = useState<todoItemProps[]>([])
+
+  /** 增加一项todo */
+  const addItem = useCallback((value: string) => {
+    const dataItem = {
+      id: new Date().getTime(),
+      content: value,
+      completed: false,
+    }
+    setTodoList(todoList => [...todoList, dataItem])
+    setInputShow(false)
+  }, [])
 
   return (
     <div className="App">
@@ -14,6 +32,7 @@ function App() {
       }} />
       <AddInput
         isInputShow={ isInputShow }
+        addItem={addItem}
       />
     </div>
   );

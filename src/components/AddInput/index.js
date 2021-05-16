@@ -3,17 +3,16 @@ import './index.scss'
 
 function AddInput (props) {
 
-  const { isInputShow } = props
+  const { isInputShow, addItem } = props
   const inputRef = useRef()
 
   const submitValue = () => {
     const inputValue = inputRef.current.value
-    console.log(inputRef.current, inputValue)
 
     if (inputValue.length === 0) {
       return
     }
-
+    addItem(inputValue)
     inputRef.current.value = ''
   }
 

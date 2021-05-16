@@ -1,42 +1,33 @@
-import { useRef } from "react"
+import { useCallback, useRef } from "react"
 import './index.scss'
 
 function AddInput (props) {
 
-  const { isInputShow, addItem } = props
+  const { isShow, addItem } = props
   const inputRef = useRef()
 
-  const submitValue = () => {
-    const inputValue = inputRef.current.value
-
-    if (inputValue.length === 0) {
-      return
-    }
-    addItem(inputValue)
-    inputRef.current.value = ''
-  }
+  const submitValue = useCallback(
+    () => {
+      const inputValue = inputRef.current.value.trim();
+      if (inputValue.length === 0) {
+        return
+      }
+      addItem(inputValue)
+      inputRef.current.value = ''
+    },
+    [addItem]
+  );
 
   return (
     <>
-      {
-        isInputShow
-        ?
-        (
-          <div className="input-wrapper">
-            <input type="text"
-              ref={inputRef}
-              placeholder="请输入待办事件"
-            />
-            <button className="btn btn-primary"
-              onClick={submitValue}
-            >
-              增加
-            </button>
-          </div>
-        )
-        :
-        ''
-      }
+      {isShow && (
+        <div className="input-wrapper">
+          <input type="text" ref={inputRef} placeholder="请输入待办事件" />
+          <button className="btn btn-primary" onClick={submitValue}>
+            增加
+          </button>
+        </div>
+      )}
     </>
   )
 }
